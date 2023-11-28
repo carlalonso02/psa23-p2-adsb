@@ -16,4 +16,3 @@ def different_aircrafts():
     return print(f'Se han visto {different_ids} aviones distintos')
 
 different_aircrafts()
-#numeros de mensajes recibidos por sensor cada hora
