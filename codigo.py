@@ -1,5 +1,5 @@
 import csv_parser as ps
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import pandas as pd
 #crear funcion que elimine columnas inecessaris(que tenga todo nulls por ejemplo)
 def total_messages():
@@ -18,21 +18,11 @@ def different_aircrafts():
     return print(f'Se han visto {different_ids} aviones distintos')
 
 different_aircrafts()
-#Número de mensajes recibidos por el sensor cada hora
-#hay que generar una grafica de tiempo frente a numero de mensajes,
-
-
-def ejemplo():
+#Número de mensajes recibidos por el sensor cada hora 00:00:02.964
+def hour_messages():
+    '''en esta funcion voy a obtener el numero de mensajes recibidos por hora'''
     data = ps.parse_csv()
-    data['Gen Time datetime'] = pd.to_datetime(data["Gen Time"]) 
-    data.groupby(pd.Grouper (key= "Gen Time datetime", freq = "H")).sum()
-    
-    return print(data['Gen Time datetime'])
-ejemplo()
-def grafica():
-    data = ps.parse_csv()
-    horas = data['Gen Time datetime']
-    plt.plot(horas, )
-    return plt.show()
-
-#numero de mensajes es el numero de filas
+    data["Gen Time hour"] = pd.to_datetime(data["Gen Time"], format='%H:%M:%S.%f')
+    hour = data.groupby("Gen Time hour").sum().reset_index()
+    return print(hour["Gen Time hour"])
+hour_messages()
