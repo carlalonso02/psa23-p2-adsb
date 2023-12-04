@@ -18,11 +18,21 @@ def different_aircrafts():
     return print(f'Se han visto {different_ids} aviones distintos')
 
 different_aircrafts()
-#Número de mensajes recibidos por el sensor cada hora 00:00:02.964
+
+#Número de mensajes recibidos por el sensor cada hora 
 def hour_messages():
-    '''en esta funcion voy a obtener el numero de mensajes recibidos por hora'''
+    '''Funcion para obtener el numero de mensajes recibidos por hora'''
     data = ps.parse_csv()
     data["Gen Time hour"] = pd.to_datetime(data["Gen Time"], format='%H:%M:%S.%f')
     hour = data.groupby("Gen Time hour").sum().reset_index()
     return print(hour["Gen Time hour"])
 hour_messages()
+
+#Número de aviones distintos vistos por el sensor cada hora (grafica)
+#lo que me dice si tengo un avion igual a otro o no es el 'Aircraft ID', tengo que agrupar los mismso valores de esa columna y sumarlos, y relacioanrlos con que hora estaba o algo asi
+def hour_aircraft():
+    '''Funcion para obtener el numerp...'''
+    data = ps.parse_csv()
+    data["Gen Time hour"] = pd.to_datetime(data["Gen Time"], format='%H:%M:%S.%f')
+    hour = data.groupby("Gen Time hour").sum().reset_index()
+    return hour
