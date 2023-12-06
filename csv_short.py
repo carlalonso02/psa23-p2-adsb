@@ -11,16 +11,23 @@ def parse_csv():
     return data
 
 def check_nans(data):
-    '''funcion que dice que columnas son null'''
+    '''Funcion que dice que columnas estan vacias'''
     for label, col_data in data.items(): #para recorrer todas las columnas de un dataframe, usar con un bucle for
     #col_data.isnull() nos devuelve una lista con valore true o false
     #col_data.isna()
-        if col_data.isnull().all(): #.any() o .all() any nos mdice si hay alguno o no, no nos da la lista
+        if col_data.isnull().all(): #.any() o .all() any nos dice si hay alguno o no, no nos da la lista
             print(f'La columna {label} esta vacia') #con esto obtenemos que columnas estan completamente vacios por usar .all
+            #data = data.drop(label, axis=1) #de esta forma se eliminan las columnas que estan vacias 
+            #data.to_csv('aircraft_MSG3_short.csv', index = False) #se guarda el cambio
 
 def main():
     data=parse_csv()
     print(data)
-    print(data.info())
+    return print(data.info())
 
-    check_nans(data)
+def hour_messages():
+    '''Funcion para obtener la hora a la que se recibieron los mensajes en una nueva columna'''
+    data = parse_csv()
+    data["Gen Time hour"] = pd.to_datetime(data["Gen Time"], format='%H:%M:%S.%f') #convierto el formato de la columna a un datetime
+    data["Hour"] = data["Gen Time hour"].dt.time #me quedo solo con la hora, ya que tambien me daba la fecha, y la meto en una columna nueva
+    return data
