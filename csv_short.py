@@ -8,6 +8,8 @@ CSV_COLUMNS=["Msg Type","Trans Type","Sesion ID","HEX","Aircraft ID","Flight ID"
 
 def parse_csv():
     data = pd.read_csv(CSV_FILE, names = CSV_COLUMNS)
+    data["Gen Time hour"] = pd.to_datetime(data["Gen Time"], format='%H:%M:%S.%f')
+    data.set_index(["Gen Time hour"], inplace = True)
     return data
 
 def check_nans(data):
@@ -20,14 +22,7 @@ def check_nans(data):
             #data = data.drop(label, axis=1) #de esta forma se eliminan las columnas que estan vacias 
             #data.to_csv('aircraft_MSG3_short.csv', index = False) #se guarda el cambio
 
-def main():
-    data=parse_csv()
+
+def main(data):
     print(data)
     return print(data.info())
-
-def hour_messages():
-    '''Funcion para obtener la hora a la que se recibieron los mensajes en una nueva columna'''
-    data = parse_csv()
-    data["Gen Time hour"] = pd.to_datetime(data["Gen Time"], format='%H:%M:%S.%f') #convierto el formato de la columna a un datetime
-    data["Hour"] = data["Gen Time hour"].dt.time #me quedo solo con la hora, ya que tambien me daba la fecha, y la meto en una columna nueva
-    return data
