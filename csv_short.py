@@ -9,7 +9,7 @@ CSV_COLUMNS=["Msg Type","Trans Type","Sesion ID","HEX","Aircraft ID","Flight ID"
 def parse_csv():
     data = pd.read_csv(CSV_FILE, names = CSV_COLUMNS)
     data["Gen Time hour"] = pd.to_datetime(data["Gen Time"], format='%H:%M:%S.%f')
-    data.set_index(["Gen Time hour"], inplace = True)
+    data.set_index(["Gen Time hour"], inplace = True) #hace que los indices sean las horas a la que se recibio el mensaje
     return data
 
 def check_nans(data):
