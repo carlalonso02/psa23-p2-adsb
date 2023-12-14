@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 #Llamdas a Dataframe
-data = ps.parse_csv()
+data = pl.parse_csv()
 
 def total_messages(data):
     '''Función para obtener el numero de mensajes totales, que sera el numero de filas del csv'''
@@ -21,7 +21,7 @@ def different_aircrafts(data):
 #Número de mensajes recibidos por el sensor cada hora 
 #me da una grafica, pero no la que quiero
 def graph_messages_hour(data):
-    '''Funcion para obtener el numero de mensajes recibidos por hora'''
+    '''Funcion para obtener el numero_message de mensajes recibidos por hora'''
     hours_graph = data.groupby(pd.Grouper(freq='H')).count()
     hours_graph.plot(kind='bar')
     plt.xlabel('Hora')
@@ -35,12 +35,12 @@ def graph_aircrafts_message(data):
     '''Función que representa el numero de mensajes recibido por hora de distintas aeronaves'''
     IDs_graph = data["Aircraft ID"].groupby(data.index.hour).value_counts().unstack()
     IDs_graph.plot(kind='bar')
+    plt.autoscale()
     plt.xlabel('Hora')
     plt.ylabel('Número de aviones')
     plt.title('Número de aviones distintos vistos por el sensor cada hora')
-    plt.legend(title='Aircraft ID', loc='upper left')
+    plt.legend(title='Aircraft ID', loc='upper left') #ajustar escala bien
     plt.savefig("aircraft_message.png",format="png")
 
-   
-
 #Presentación 
+graph_aircrafts_message(data)
