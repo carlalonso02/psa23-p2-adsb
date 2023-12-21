@@ -3,8 +3,9 @@ import csv_long as pl
 import matplotlib.pyplot as plt
 import pandas as pd
 from geopy import distance
+import numpy as np
 #Llamadas a Dataframe
-data = pl.parse_csv()
+data = ps.parse_csv()
 FLIGHT = "E8044F"
 def total_messages(data):
     '''Función para obtener el numero de mensajes totales, que sera el numero de filas del csv'''
@@ -74,22 +75,26 @@ def repetitive(data):
     ID_repetitive = ID_times.head(10)
     return print(f'Las 10 aeronavaes que más aparecen en el sensor son:\n{ID_repetitive}')
 
+'''Obtén los 10 aviones que durante más tiempo están en el rango del sensor.
+Nótese que para identificar estos aviones, los mensajes sucesivos enviados
+por los aviones no han de haberse enviado en un intervalo mayor de 30
+segundos'''
 def more_repetitive(data):
     '''Función que obtiene los 10 aviones que mas tiempo estan en el sensor'''
     num = data.groupby(pd.Grouper(freq = '30S')).count() #agrupacion cada 30 segundos, buscar los 10 aviones que ma se repiten? usar HEX
 
-'''Muestra la distancia máxima/mínima/media de los mensajes que recibe el
-sensor. Para ello calcula la distancia (geodésica) entre las coordenadas de
-los mensajes recibidos y las coordenadas del sensor de la URJC (40.283205,
--3.821476). Consulta https://geopy.readthedocs.io/ para calcular las dis-
-tancias (no hace falta tener en cuenta la altitud).'''
-
 def calculate_distance(data):
     '''Función que calcula la distancia maxima y minima entre las coordenadas de los mensajes recibidos'''
     urjc_coord = (40.283205,-3.821476) 
-    #tengo pasar los datos de las columnas latitud y longitud a un parentesis? tupla
-    coord = (data['Lat'] ,data['Lon'])
-    return print(coord)
+    coord = tuple(zip(data['Lat'] ,data['Lon'])) #creo una tupla para junatr los datos de las columnas lat y long ,manteniendo el formato
+    distances = [] #creo una lista para introducir las distancias
+    for i in range(len(coord)-1):
+        dist = distance.geodesic(urjc_coord, coord[i])
+        distances.append(dist)
+    max_distance = max(distances)
+    min_distance = min(distances) 
+    media_distance = np.mean(distances)   
+    return print(f'El mensaje mas lejano que recibió está a {max_distance} ,el mas cercano a {min_distance} y la media es de {media_distance} ')
 #Presentación 
 print('\033[1m'+ 'Práctica 9'+ '\033[0m') #negrita
 print("\033[4;37m"+"Ejercicio 2: Análisis de datos"+"\033[0m")#subrayado
