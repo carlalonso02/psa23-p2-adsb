@@ -4,9 +4,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from geopy import distance
 import numpy as np
+import re 
 #Llamadas a Dataframe
-data = ps.parse_csv()
-FLIGHT = "E8044F"
+data = pl.parse_csv()
+FLIGHT = "3420CB"
 def total_messages(data):
     '''Función para obtener el numero de mensajes totales, que sera el numero de filas del csv'''
     number_rows = data.shape[0]
@@ -89,7 +90,7 @@ def calculate_distance(data):
     coord = tuple(zip(data['Lat'] ,data['Lon'])) #creo una tupla para junatr los datos de las columnas lat y long ,manteniendo el formato
     distances = [] #creo una lista para introducir las distancias
     for i in range(len(coord)-1):
-        dist = distance.geodesic(urjc_coord, coord[i])
+        dist = distance.geodesic(urjc_coord, coord[i]) #error en esta linea, en la fila i=5553, error de archivo?
         distances.append(dist)
     max_distance = max(distances)
     min_distance = min(distances) 
@@ -106,4 +107,5 @@ print("\033[4;37m"+"Ejercicio 2: Análisis de datos"+"\033[0m")#subrayado
 #time_flight(data, FLIGHT)
 #altitude_flight(data,FLIGHT)
 #repetitive(data)
-#calculate_distance(data)
+calculate_distance(data)
+#filt_data(data)
