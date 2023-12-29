@@ -4,10 +4,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from geopy import distance
 import numpy as np
-import re 
 #Llamadas a Dataframe
 data = pl.parse_csv()
-FLIGHT = "3420CB"
+FLIGHT = "34640E"
 def total_messages(data):
     '''Función para obtener el numero de mensajes totales, que sera el numero de filas del csv'''
     number_rows = data.shape[0]
@@ -18,11 +17,11 @@ def different_aircrafts(data):
     different_ids = data['Aircraft ID'].nunique()
     return print(f'Se han visto {different_ids} aviones distintos')
 
-#arreglar indice eje x y quitar escala
+
 def graph_messages_hour(data):
-    '''Funcion para obtener el numero_message de mensajes recibidos por hora'''
+    '''Funcion para obtener el de mensajes recibidos por hora'''
     hours_graph = data.groupby(pd.Grouper(freq='H')).count()
-    hours_graph.plot(y = 'HEX', kind='bar', color = '#AF7AC5')
+    hours_graph.plot(y = 'HEX', kind='bar', color = '#AF7AC5', legend = False)
     plt.autoscale()
     plt.xlabel('Hora',fontfamily="monospace")
     plt.ylabel('Número de mensajes',fontfamily="monospace")
@@ -51,14 +50,14 @@ def time_flight(data,Flight):
     '''Funcion que representa el número de mensajes cada 5 minutos'''
     data_filter = data[data["Aircraft ID"] == FLIGHT]
     IDs_graph = data_filter.groupby(pd.Grouper(freq = '5T')).count() #5 es la frequencia 5 minutos
-    IDs_graph.plot(y = 'HEX', kind = 'bar', color = '#F5B041')
+    IDs_graph.plot(y = 'HEX', kind = 'bar', color = '#F5B041', legend = False)
     plt.autoscale()
     plt.xlabel('Hora',fontfamily="monospace")
     plt.ylabel('Número de mensajes',fontfamily="monospace")
     plt.title('Número de mensajes recibidos cada 5 minutos',fontfamily="monospace")
     plt.savefig("time_flight.png", format = "png")
     plt.show()
-
+#arregalr ejes x
 def altitude_flight(data, FLIGHT):
     '''Función que muetsra visualemnte la variacion de la altura de vuelo de una determinada aeronave'''
     data_filter = data[data["Aircraft ID"] == FLIGHT]
@@ -69,7 +68,6 @@ def altitude_flight(data, FLIGHT):
     plt.savefig("altitude_flight.png", format = "png")
     plt.show()
 
-#mejorar formato, aparece el numero de veces que se repite cada string, intentar que no aparezca
 def repetitive(data):
     '''Función que obtiene los 10 aviones mas captados por el sensor'''
     ID_times = data["Aircraft ID"].value_counts()
@@ -83,14 +81,16 @@ segundos'''
 def more_repetitive(data):
     '''Función que obtiene los 10 aviones que mas tiempo estan en el sensor'''
     num = data.groupby(pd.Grouper(freq = '30S')).count() #agrupacion cada 30 segundos, buscar los 10 aviones que ma se repiten? usar HEX
-
+ 
+ #mi ordenador no lo corre, probar en laboratorio
 def calculate_distance(data):
     '''Función que calcula la distancia maxima y minima entre las coordenadas de los mensajes recibidos'''
     urjc_coord = (40.283205,-3.821476) 
-    coord = tuple(zip(data['Lat'] ,data['Lon'])) #creo una tupla para junatr los datos de las columnas lat y long ,manteniendo el formato
+    data_filt = data.dropna(subset = ['Lat','Lon']) #filtro las filas que tiene estos dos campos vacios
+    coord = tuple(zip(data_filt['Lat'] ,data_filt['Lon'])) #creo una tupla para junatr los datos de las columnas lat y long ,manteniendo el formato
     distances = [] #creo una lista para introducir las distancias
     for i in range(len(coord)-1):
-        dist = distance.geodesic(urjc_coord, coord[i]) #error en esta linea, en la fila i=5553, error de archivo?
+        dist = distance.geodesic(urjc_coord, coord[i]) 
         distances.append(dist)
     max_distance = max(distances)
     min_distance = min(distances) 
@@ -104,8 +104,7 @@ print("\033[4;37m"+"Ejercicio 2: Análisis de datos"+"\033[0m")#subrayado
 #graph_messages_hour(data)
 #graph_aircrafts_message(data)
 #info_flight(data,FLIGHT)
-#time_flight(data, FLIGHT)
-#altitude_flight(data,FLIGHT)
+time_flight(data, FLIGHT)
+altitude_flight(data,FLIGHT)
 #repetitive(data)
-calculate_distance(data)
-#filt_data(data)
+#calculate_distance(data)
