@@ -1,6 +1,3 @@
-#aqui estara todo el codigo relacionado con la lectura de los datos
-#guardamos funciones para llamr desde otro archivo
-#como esta aqui podemos eliminar las funciones en otros archivos
 import pandas as pd
 
 CSV_FILE = "aircraft_MSG3_short.csv"
