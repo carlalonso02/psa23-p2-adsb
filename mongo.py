@@ -1,5 +1,3 @@
-
-#usar comando insert_one para añadir un elemento, para añadir varios insert_many, para que furrule bien ponerle lo de records, para mantener el formato adecuado
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import csv_long as pl
