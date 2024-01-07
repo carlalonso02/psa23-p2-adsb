@@ -23,10 +23,10 @@ def filt_data(data):
     filt = data[data["Aircraft ID"].str.contains(key, case = False)]
     return filt
 def intro_pandas(data):
-    #tenemos que crear una coleccion y guardarla en una coleccion
+    #tenemos que crear una coleccion y guardarla 
     db_adsb = client ["Aircraft_MSG3"]
     col_adsb = db_adsb["Aircraft ID"] #creo la coleccion
     aircrafts_aa = filt_data(data)
-    aircraft_ID = aircrafts_aa.to_dict(orient = 'records')  #convierto el filtrado anterior en una lista
-    col_adsb.insert_many(aircraft_ID) #subo la lista
+    aircraft_ID = aircrafts_aa.to_dict(orient = 'records')  #convierto el filtrado anterior en una diccionario
+    col_adsb.insert_many(aircraft_ID) #subo el diccionario
 intro_pandas(data)
