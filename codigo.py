@@ -30,7 +30,7 @@ def graph_messages_hour(data):
 
 def graph_aircrafts_message(data):
     '''Función que representa el numero de mensajes recibido por hora de distintas aeronaves'''
-    IDs_graph = data["Aircraft ID"].groupby(data.index.hour).value_counts().unstack()
+    IDs_graph = data["Aircraft ID"].groupby(data.index.hour).value_counts().unstack() #Buscar funcionamiento bien
     IDs_graph.plot(kind='bar')
     plt.autoscale()
     plt.xlabel('Hora', fontfamily="monospace")
@@ -47,7 +47,7 @@ def info_flight(data, FLIGHT):
 
 def time_flight(data,Flight):
     '''Funcion que representa el número de mensajes cada 5 minutos'''
-    data_filter = data[data["Aircraft ID"] == FLIGHT]
+    data_filter = data[data["Aircraft ID"] == FLIGHT] #datframe que solo tiene los mensajes de FLIGHT
     IDs_graph = data_filter.groupby(pd.Grouper(freq = '5T')).count() #5 es la frequencia 5 minutos
     IDs_graph.plot(y = 'HEX', kind = 'bar', color = '#F5B041', legend = False)
     plt.autoscale()
