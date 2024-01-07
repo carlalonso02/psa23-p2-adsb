@@ -30,7 +30,7 @@ def graph_messages_hour(data):
 
 def graph_aircrafts_message(data):
     '''Función que representa el numero de mensajes recibido por hora de distintas aeronaves'''
-    IDs_graph = data["Aircraft ID"].groupby(data.index.hour).value_counts().unstack() #Buscar funcionamiento bien
+    IDs_graph = data["Aircraft ID"].groupby(data.index.hour).value_counts().unstack() 
     IDs_graph.plot(kind='bar')
     plt.autoscale()
     plt.xlabel('Hora', fontfamily="monospace")
