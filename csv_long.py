@@ -1,6 +1,6 @@
 import pandas as pd
 
-CSV_FILE = "aircraft_MSG3.csv"
+CSV_FILE = "aircraft_MSG3_exam.csv" #modificacion
 CSV_COLUMNS=["Msg Type","Trans Type","Sesion ID","HEX","Aircraft ID","Flight ID","Gen Date","Gen Time","Log Date","Log Time","Callsign","Altitude","GND Speed","Track","Lat","Lon","Ver Rate","Squawk","Alert","Emergency","SPI","Is On Ground"]
 
 def parse_csv():
