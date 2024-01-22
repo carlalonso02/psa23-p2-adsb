@@ -1,4 +1,4 @@
-#Examen
+# Examen
 Realice el ejercicio B
 # Documentos a evaluar
 _Ejercicio 2_ : codigo.py, csv_long.py, csv_short.py 
