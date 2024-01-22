@@ -5,8 +5,10 @@ import pandas as pd
 from geopy import distance
 import numpy as np
 #Llamadas a Dataframe
-data = pl.parse_csv()
+data = pl.parse_csv() #modifique tambien csv_longo, ya no llama a los datos de la practica, llama al csv del examen
 FLIGHT = "34640E"
+FLIGHT_1 = "346316"
+FLIGHT_2 = "4CA4EB"
 def total_messages(data):
     '''Función para obtener el numero de mensajes totales, que sera el numero de filas del csv'''
     number_rows = data.shape[0]
@@ -40,10 +42,10 @@ def graph_aircrafts_message(data):
     plt.savefig("aircraft_message.png",format="png")
     plt.show()
 
-def info_flight(data, FLIGHT):
-    ''' Función que muestra el numero de mensajes recibidos por una aeronave concreta'''
-    num = data["Aircraft ID"].value_counts()[FLIGHT]
-    return print(f'Se reciben {num} mensajes de la aeronave cuya ID es {FLIGHT}')
+def info_flight(data, FLIGHT_1, FLIGHT_2):
+    num_1 = data["Aircraft ID"].value_counts()[FLIGHT_1]
+    num_2 = data["Aircraft ID"].value_counts()[FLIGHT_2]
+    return print(f'Se reciben {num_1} mensajes de la aeronave cuya ID es {FLIGHT_1}, y {num_2} mensajes de la aeronave {FLIGHT_2}')
 
 def time_flight(data,Flight):
     '''Funcion que representa el número de mensajes cada 5 minutos'''
@@ -57,15 +59,23 @@ def time_flight(data,Flight):
     plt.savefig("time_flight.png", format = "png")
     plt.show()
 
-def altitude_flight(data, FLIGHT):
+def altitude_flight(data,FLIGHT_1,FLIGHT_2):
     '''Función que muetsra visualemnte la variacion de la altura de vuelo de una determinada aeronave'''
-    data_filter = data[data["Aircraft ID"] == FLIGHT]
-    plt.plot(data_filter.index, data_filter[["Altitude"]], linestyle = '--', color = '#1ABC9C')
+    data_filter_1 = data[data["Aircraft ID"] == FLIGHT_1]
+    data_filter_2 = data[data["Aircraft ID"] == FLIGHT_2]
+    plt.plot(data_filter_1.index, data_filter_1[["Altitude"]], linestyle = '--', color = '#1ABC9C')
     plt.xlabel('Hora', fontfamily="monospace")
     plt.ylabel('Altitud', fontfamily="monospace")
-    plt.title(f'Variacion de la altitud del vuelo {FLIGHT} con el tiempo', fontfamily="monospace")
-    plt.savefig("altitude_flight.png", format = "png")
+    plt.title(f'Variacion de la altitud del vuelo {FLIGHT_1} con el tiempo', fontfamily="monospace")
+    plt.savefig("altitude_flight_1.png", format = "png")
     plt.show()
+    plt.plot(data_filter_2.index, data_filter_2[["Altitude"]], linestyle = '--', color = '#1ABC9C')
+    plt.xlabel('Hora', fontfamily="monospace")
+    plt.ylabel('Altitud', fontfamily="monospace")
+    plt.title(f'Variacion de la altitud del vuelo {FLIGHT_2} con el tiempo', fontfamily="monospace")
+    plt.savefig("altitude_flight_2.png", format = "png")
+    plt.show()
+
 
 def repetitive(data):
     '''Función que obtiene los 10 aviones mas captados por el sensor'''
@@ -94,16 +104,11 @@ def calculate_distance(data):
     media_distance = np.mean(distances)   
     return print(f'El mensaje mas lejano que recibió está a {max_distance} ,el mas cercano a {min_distance} y la media es de {media_distance} ')
 
+
+    
+  
 #Presentación 
 print('\033[1m'+ 'Práctica 9'+ '\033[0m') #negrita
 print("\033[4;37m"+"Ejercicio 2: Análisis de datos"+"\033[0m")#subrayado
-total_messages(data)
-different_aircrafts(data)
-graph_messages_hour(data)
-graph_aircrafts_message(data)
-info_flight(data,FLIGHT)
-time_flight(data,FLIGHT)
-altitude_flight(data, FLIGHT)
-repetitive(data)
-continuous_aircrafts(data)
-calculate_distance(data)
+info_flight(data,FLIGHT_1,FLIGHT_2)
+altitude_flight(data,FLIGHT_1,FLIGHT_2)
